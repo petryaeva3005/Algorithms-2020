@@ -119,6 +119,46 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
+        try {
+            sortTemperatures("input/temp_in2.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                """
+                    -272.0
+                    -269.7
+                    -99.9
+                    -98.4
+                    -87.0
+                    -75.7
+                    -75.3
+                    -34.8
+                    -34.2
+                    -20.7
+                    -11.3
+                    3.2
+                    5.5
+                    23.0
+                    23.5
+                    25.0
+                    56.3
+                    66.9
+                    74.5
+                    75.6
+                    76.5
+                    87.5
+                    87.6
+                    123.8
+                    234.0
+                    272.2
+                    345.3
+                    473.2
+                    494.1
+                """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+
         fun testGeneratedTemperatures(size: Int): PerfResult<Unit> {
             try {
                 val res = generateTemperatures(size)
@@ -272,6 +312,25 @@ abstract class AbstractTaskTests : AbstractFileTests() {
                         41
                         32
                         32
+                    """.trimIndent()
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+        try {
+            sortSequence("input/seq_in6.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                """
+                      252
+                      376
+                      485
+                      534
+                      617
+                      781
+                      873
+                      973
+                      1
                     """.trimIndent()
             )
         } finally {
