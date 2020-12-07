@@ -44,6 +44,10 @@ abstract class AbstractOpenAddressingSetTest {
         for (iteration in 1..100) {
             val bitsNumber = random.nextInt(4) + 6
             val openAddressingSet = create<Int>(bitsNumber)
+            assertFalse(
+                openAddressingSet.remove(3),
+                "Deleting from an empty set should output false."
+            )
             for (i in 1..50) {
                 val firstInt = random.nextInt(32)
                 val secondInt = firstInt + (1 shl bitsNumber)
@@ -113,7 +117,11 @@ abstract class AbstractOpenAddressingSetTest {
                 controlSet.isEmpty(),
                 "OpenAddressingSetIterator doesn't traverse the entire set."
             )
-            assertFailsWith<IllegalStateException>("Something was supposedly returned after the elements ended") {
+            assertFalse(
+                openAddressingSetIter.hasNext(),
+                "Iterator not have any next elements."
+            )
+            assertFailsWith<NoSuchElementException>("Something was supposedly returned after the elements ended") {
                 openAddressingSetIter.next()
             }
             println("All clear!")
@@ -173,7 +181,20 @@ abstract class AbstractOpenAddressingSetTest {
                     "Open addressing set has the element $element that is not in control set."
                 )
             }
-            println("All clear!")
+
+            openAddressingSet.clear()
+            openAddressingSet += "remove"
+            openAddressingSet += "don't remove"
+            val testIterator = openAddressingSet.iterator()
+            while (testIterator.hasNext()) {
+                val element = testIterator.next()
+                if (element != "don't remove")
+                    testIterator.remove()
+            }
+            assertEquals(
+                1, openAddressingSet.size,
+                "An element that didn't need to be deleted was removed from the set"
+            )
         }
     }
 }
